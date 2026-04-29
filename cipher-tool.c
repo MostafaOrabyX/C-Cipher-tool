@@ -5,72 +5,119 @@
 
 char *encrypt(char pltext[] , int encode);
 char *decrypt( char citext[] , int decode);
+void cleanbuffer();
 
 int main()
 {
     while(1)
     {
-        char enorde ;
+        char en_or_de ;
         printf("Enter the first letter\nEncrypt(E) or Decrypt(D):");
-        scanf(" %c", &enorde);
-        if (toupper(enorde) == 'E')
+        if (scanf(" %c", &en_or_de) != 1)
+        {
+            printf("invalid input\n");
+            cleanbuffer();
+            continue;
+        }
+        
+        if (toupper(en_or_de) == 'E')
         {
             char plaintext[100] ;
             int ecode ;
+            // get the plaintext from the user
             printf("Text:");
             scanf("%s" , plaintext);
+            // get the code from the user
             printf("Code:");
             scanf("%i" , &ecode);
+            // encrpt the text then print it
             char *ciphered_result = encrypt(plaintext , ecode);
             printf("Ciphertext: %s\n" , ciphered_result);
             free(ciphered_result);
             
         }
 
-        else if (toupper(enorde) == 'D')
+        else if (toupper(en_or_de) == 'D')
         {
             char ciphertext[100];
             int dcode ;
+            // get the ciphertext from the user
             printf("Ciphertext:");
             scanf("%s" , ciphertext);
+            // get the code from the user
             printf("Code:");
             scanf("%i" , &dcode);
+            // decrypt the text then print it
             char *plain_result = decrypt(ciphertext , dcode);
             printf("plaintext: %s\n" ,plain_result );
             free(plain_result);
         }
 
+        // if the user want to exit 
         char question ;
-        printf("do you want to encrypt or decrypt anything else (Y/N) ? ");
-        scanf(" %c" , &question);
+        printf("Do you want to encrypt or decrypt anything else (y/n):");
+        if (scanf(" %c" , &question) != 1)
+        {
+            printf("invalid input\n");
+            cleanbuffer();
+            continue;
+        }
+
         if (toupper(question) == 'N')
         {
-            return 0 ;
+           return 0 ;
         }
     }
 }
 
 
 
+// encryption function
 char *encrypt( char pltext[] , int encode)
 {
-    char *cipltext = malloc((strlen(pltext)+1) * sizeof(char));
+    // get space from the memory for the ciphertext
+    char *ciphered_plain_text = malloc((strlen(pltext)+1) * sizeof(char));
+    if (ciphered_plain_text == NULL )
+    {
+        printf("Memory allocation failed\n");
+        return NULL;
+    }
     int len = strlen(pltext);
-    cipltext[len] = '\0' ;
+    ciphered_plain_text[len] = '\0' ;
+    // encrypt every char and put it in ciphered_plain_text 
     for(int i = 0 ; i < len ; i++ )
     {
-        cipltext[i] = pltext[i] + encode ;
+        ciphered_plain_text[i] = pltext[i] + encode ;
     }
-    return cipltext ;
+
+    // return the ciphered text
+    return ciphered_plain_text ;
 }
+
+// decryption function
 char *decrypt( char citext[] , int decode)
 {
-    char *plcitext = malloc((strlen(citext)+1) * sizeof(char));
+    // get space from the memory for the plaintext
+    char *de_ciphered_text = malloc((strlen(citext)+1) * sizeof(char));
+    if ( de_ciphered_text == NULL)
+    {
+        printf("Memory allocation failed\n");
+        return NULL;
+    }
     int len = strlen(citext);
-    plcitext[len] = '\0';
+    de_ciphered_text[len] = '\0';
+    // decrypt every char and put it in de_ciphered_text
     for(int n = 0 ; n < len ; n++ )
     {
-        plcitext[n] = citext[n] - decode ;
+        de_ciphered_text[n] = citext[n] - decode ;
     }
-    return plcitext;
+
+    // return the deciphered text
+    return de_ciphered_text;
+}
+
+// clean_buffer function
+void cleanbuffer()
+{
+    while (getchar() != '\n'); // clean the input buffer
 }
