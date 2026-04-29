@@ -32,8 +32,16 @@ int main()
             scanf("%i" , &ecode);
             // encrpt the text then print it
             char *ciphered_result = encrypt(plaintext , ecode);
-            printf("Ciphertext: %s\n" , ciphered_result);
-            free(ciphered_result);
+            // check for NULL
+            if ( ciphered_result != NULL)
+            {
+                printf("Ciphertext: %s\n" , ciphered_result);
+                free(ciphered_result);
+            }
+            else
+            {
+                printf("encryption failed\n");
+            }
             
         }
 
@@ -49,8 +57,17 @@ int main()
             scanf("%i" , &dcode);
             // decrypt the text then print it
             char *plain_result = decrypt(ciphertext , dcode);
-            printf("plaintext: %s\n" ,plain_result );
-            free(plain_result);
+            //check for NULL
+            if ( plain_result != NULL )
+            {
+                printf("plaintext: %s\n" ,plain_result );
+                free(plain_result);
+            }
+            else
+            {
+                printf("decryption failed\n");
+            }
+
         }
 
         // if the user want to exit 
