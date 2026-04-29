@@ -25,11 +25,17 @@ int main()
             char plaintext[100] ;
             int ecode ;
             // get the plaintext from the user
-            printf("Text:");
-            scanf("%s" , plaintext);
+            printf("Text: ");
+            scanf(" %[^\n]", plaintext);
             // get the code from the user
-            printf("Code:");
+            printf("Code: ");
             scanf("%i" , &ecode);
+            // code must be from 0 to 26
+            if (ecode < 0 || ecode > 26)
+            {
+                printf("Invalid code! must be between 0 and 26\n");
+                continue;
+            }
             // encrpt the text then print it
             char *ciphered_result = encrypt(plaintext , ecode);
             // check for NULL
@@ -50,11 +56,17 @@ int main()
             char ciphertext[100];
             int dcode ;
             // get the ciphertext from the user
-            printf("Ciphertext:");
-            scanf("%s" , ciphertext);
+            printf("Ciphertext: ");
+            scanf(" %[^\n]", ciphertext);
             // get the code from the user
-            printf("Code:");
+            printf("Code: ");
             scanf("%i" , &dcode);
+            // code must be from 0 to 26
+            if (dcode < 0 || dcode > 26)
+            {
+                printf("Invalid code! must be between 0 and 26\n");
+                continue;
+            }
             // decrypt the text then print it
             char *plain_result = decrypt(ciphertext , dcode);
             //check for NULL
@@ -70,7 +82,7 @@ int main()
 
         }
 
-        // if the user want to exit 
+        // if the user wants to exit 
         char question ;
         printf("Do you want to encrypt or decrypt anything else (y/n):");
         if (scanf(" %c" , &question) != 1)
@@ -104,7 +116,15 @@ char *encrypt( char pltext[] , int encode)
     // encrypt every char and put it in ciphered_plain_text 
     for(int i = 0 ; i < len ; i++ )
     {
-        ciphered_plain_text[i] = pltext[i] + encode ;
+        char u_ciphered_plain_text = toupper(pltext[i]);
+        if ( u_ciphered_plain_text >= 'A' && u_ciphered_plain_text <= 'Z') // if the user enters chars from A to Z
+        {
+            ciphered_plain_text[i] = 'A' + ((u_ciphered_plain_text - 'A' + encode) % 26); 
+        }
+        else
+        {
+            ciphered_plain_text[i] = pltext[i];
+        }
     }
 
     // return the ciphered text
@@ -126,7 +146,15 @@ char *decrypt( char citext[] , int decode)
     // decrypt every char and put it in de_ciphered_text
     for(int n = 0 ; n < len ; n++ )
     {
-        de_ciphered_text[n] = citext[n] - decode ;
+        char u_de_ciphered_text = toupper(citext[n]); 
+        if (u_de_ciphered_text >= 'A' && u_de_ciphered_text <= 'Z' ) // if the user enters chars from A to Z
+        {
+            de_ciphered_text[n] = 'A' + ((u_de_ciphered_text - 'A' - decode + 26) % 26);
+        }
+        else 
+        {
+            de_ciphered_text[n] = citext[n];
+        }
     }
 
     // return the deciphered text
