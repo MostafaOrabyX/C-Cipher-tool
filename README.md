@@ -25,8 +25,12 @@ A simple command-line cipher tool that allows users to encrypt and decrypt text 
 
 ## How to Run
 
-1. Compile the program 
+1. Compile the program using c compiler :
+   Example :
+   gcc cipher-tool.c -o cipher-tool
+   
 2. Run the program:
+   ./cipher-tool
 
 ---
 
